@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Career Guidance Chatbot – Get personalized career advice powered by AI." />
+  <title>AI Career Guidance Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       Preference Onboarding Overlay
+       ═══════════════════════════════════════════ -->
+  <div class="preference-overlay" id="preferenceOverlay">
+    <div class="preference-card" id="preferenceCard">
+      <div class="pref-header">
+        <div class="pref-icon">🎯</div>
+        <h2>Welcome to CareerHelp.AI</h2>
+        <p>Tell us about yourself so we can personalise your career guidance.</p>
+      </div>
+
+      <form id="preferenceForm" autocomplete="off">
+        <!-- Name -->
+        <div class="pref-field">
+          <label for="prefName">Your Name</label>
+          <input type="text" id="prefName" placeholder="e.g. Radha" maxlength="50" />
+        </div>
+
+        <!-- Education Level -->
+        <div class="pref-field">
+          <label for="prefEducation">Education Level</label>
+          <select id="prefEducation">
+            <option value="">Select your level</option>
+            <option value="High School">High School</option>
+            <option value="Undergraduate">Undergraduate (B.Tech / B.Sc / BCA etc.)</option>
+            <option value="Postgraduate">Postgraduate (M.Tech / MBA / MCA etc.)</option>
+            <option value="Working Professional">Working Professional</option>
+            <option value="Career Changer">Career Changer</option>
+          </select>
+        </div>
+
+        <!-- Interests -->
+        <div class="pref-field">
+          <label for="prefInterests">Your Interests &amp; Skills</label>
+          <input type="text" id="prefInterests" placeholder="e.g. coding, design, data analysis, writing" maxlength="200" />
+        </div>
+
+        <!-- Career Domain -->
+        <div class="pref-field">
+          <label for="prefDomain">Preferred Career Domain</label>
+          <select id="prefDomain">
+            <option value="">Select a domain</option>
+            <option value="Software Development">Software Development</option>
+            <option value="Data Science & AI">Data Science & AI</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Cloud & DevOps">Cloud & DevOps</option>
+            <option value="UI/UX Design">UI/UX Design</option>
+            <option value="Product Management">Product Management</option>
+            <option value="Digital Marketing">Digital Marketing</option>
+            <option value="Finance & Fintech">Finance & Fintech</option>
+            <option value="Healthcare & Biotech">Healthcare & Biotech</option>
+            <option value="Not Sure Yet">Not Sure Yet</option>
+          </select>
+        </div>
+
+        <button type="submit" class="pref-submit" id="prefSubmitBtn">
+          <span>Start My Career Journey</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+          </svg>
+        </button>
+      </form>
+
+      <p class="pref-skip" id="prefSkip">Skip for now →</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       Chat Interface
+       ═══════════════════════════════════════════ -->
+  <div class="chat-wrapper" id="chatWrapper">
+
+    <!-- Header -->
+    <header class="chat-header">
+      <div class="header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V15h-2v1.93A8 8 0 0 1 4.07 11H6V9H4.07A8 8 0 0 1 11 4.07V6h2V4.07A8 8 0 0 1 19.93 11H18v2h1.93A8 8 0 0 1 13 16.93z"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1>AI Career Guidance Chatbot</h1>
+        <span class="status-dot"></span>
+        <span class="status-label">Online</span>
+      </div>
+      <button class="header-prefs-btn" id="clearChatBtn" aria-label="Clear chat" title="Clear chat" style="margin-right: 8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>
+        </svg>
+      </button>
+      <button class="header-prefs-btn" id="editPrefsBtn" aria-label="Edit preferences" title="Edit preferences">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96a7.03 7.03 0 00-1.62-.94l-.36-2.54A.48.48 0 0013.92 2h-3.84a.48.48 0 00-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.72 8.87a.48.48 0 00.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.03.7 1.62.94l.36 2.54c.05.24.26.41.48.41h3.84c.24 0 .44-.17.48-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1115.6 12 3.6 3.6 0 0112 15.6z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Preference Badge (visible after onboarding) -->
+    <div class="pref-badge" id="prefBadge" style="display: none;">
+      <span id="prefBadgeText"></span>
+    </div>
+
+    <!-- Chat Messages Area -->
+    <main class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat messages">
+
+      <!-- Welcome bot message -->
+      <div class="message bot-message" id="welcome-msg">
+        <div class="avatar bot-avatar" aria-label="Bot">🤖</div>
+        <div class="bubble bot-bubble">
+          <p>👋 Hello! I'm your <strong>AI Career Assistant</strong>. Ask me anything about career paths, resume tips, interview strategies, or job searching. I'm here to help!</p>
+          <span class="timestamp" id="welcome-time"></span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Quick Suggestion Chips -->
+    <div class="suggestion-chips" id="suggestionChips">
+      <button class="chip" data-query="I like coding">💻 I like coding</button>
+      <button class="chip" data-query="I like business">📊 I like business</button>
+      <button class="chip" data-query="I like design">🎨 I like design</button>
+    </div>
+
+    <!-- Input Area -->
+    <footer class="chat-input-area">
+      <div class="input-container">
+        <input
+          type="text"
+          id="userInput"
+          class="chat-input"
+          placeholder="Ask about your career..."
+          aria-label="Type your message"
+          autocomplete="off"
+          maxlength="500"
+        />
+        <button id="sendBtn" class="send-btn" aria-label="Send message">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
